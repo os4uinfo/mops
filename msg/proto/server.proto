@@ -1,0 +1,21 @@
+package pb;
+
+message DomainMap{
+    repeated int32 operator_id = 1;
+    repeated string domain = 2;
+}
+
+message MachineStatProto {
+	optional string cpu = 1;
+	optional string mem = 2;
+	optional string disk = 3;
+}
+
+message ServerStatProto {
+	optional string name = 1;
+	optional string res_name = 2;
+	optional bytes game_cfg = 3;
+	optional int32 stat = 4; // start or stop
+	optional int32 doing_stat = 5; // 如果doing_stat存在，并且doing_stat_err为空，说明正在进行某项操作，stat就显示成doing_stat
+	optional string doing_stat_err = 6;
+}
