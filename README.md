@@ -1,5 +1,6 @@
 # mops
 1)
+
 set -e
 
 rm -rf ./msg/pb/*.pb.go
