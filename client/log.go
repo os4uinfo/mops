@@ -5,7 +5,7 @@ import (
 )
 
 func logInfo(a ...interface{}) {
-	// fmt.Println(a...)
+	fmt.Println(a...)
 }
 
 func logError(a ...interface{}) {

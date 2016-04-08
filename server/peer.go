@@ -2,7 +2,7 @@ package server
 
 import (
     "log"
-    "fmt"
+//    "fmt"
     "net"
     "time"
     "mops/msg"
@@ -30,7 +30,7 @@ func workerListener(addr string) {
             logError("worker listener accept error!", err)
             continue
         }
-        fmt.Println(conn)
+//        fmt.Println(conn)
         go workerHandler(conn)
     }
 }

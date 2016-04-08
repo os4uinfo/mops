@@ -26,7 +26,6 @@ type HistoryWorker struct {
     FirstRegTime string `json:"firstRegTime"`
 }
 
-
 var (
     fileCfg string
 )

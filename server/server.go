@@ -13,7 +13,7 @@ var (
 )
 
 func init() {
-    flags.StringVar(&portClientListener, "client listener", "20001", "server listen port")
+    flags.StringVar(&portClientListener, "clientlistener", "20001", "server listen port")
     flags.StringVar(&portHttp, "ph", "127.0.0.1:20000", "server http port ")
     flags.StringVar(&fileCfg, "c", "cfg.ini", "master platform config")
 }

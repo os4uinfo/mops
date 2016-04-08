@@ -3,11 +3,12 @@ package client
 import (
     "flag"
     "log"
-//    "sync/atomic"
+    "sync/atomic"
     "mops/msg"
     "net"
     "fmt"
     "time"
+    "strconv"
 )
 
 var (
@@ -15,16 +16,21 @@ var (
     baseDir     string
     workerId    string
     masterAddr  string
+    httpPort    string
 )
 
 var (
     conn net.Conn
 )
+var (
+    doingJobCounter int32
+)
 
 func init() {
     flags.StringVar(&baseDir, "dir", "/tmp/tmp", "worker base dir")
     flags.StringVar(&workerId, "id", "yy-168.168.0.123", "worker id")
-    flags.StringVar(&masterAddr, "addr", "localhost:20001", "master address")
+    flags.StringVar(&masterAddr, "addr", "168.168.60.15:20001", "master address")
+    flags.StringVar(&httpPort, "port", "20002", "http port")
 }
 
 func Start(args []string) {
@@ -39,7 +45,7 @@ func Start(args []string) {
         log.Fatal("workerId非法，合法字符: a-z A-Z 0-9 - _ .")
     }
 
-//    go httpService("127.0.0.1:" + httpPort)
+    go httpService("127.0.0.1:" + httpPort)
 //    go tickResClear()
 
     conn = connectUntilSuccess()
@@ -49,7 +55,7 @@ func Start(args []string) {
 
     for {
         data, err := msg.ReadBytes(conn)
-        fmt.Println(data)
+        logInfo(data)
         if err != nil {
             conn.Close()
             logError("worker msg.ReadBytes error, reconnect!", err)
@@ -147,3 +153,20 @@ func connect() (net.Conn, error) {
 //        }
 //    }
 //}
+func close() {
+    if conn != nil {
+        conn.Close()
+    }
+
+    for i := 0; i < 60; i++ {
+        if v := atomic.LoadInt32(&doingJobCounter); v == 0 {
+            break
+        } else if v < 0 {
+            log.Fatal("worker doingJobCounter < 0!" + strconv.Itoa(int(v)))
+        } else {
+            logInfo("worker wait close:", v)
+        }
+        time.Sleep(time.Second)
+    }
+    log.Fatal("worker close!")
+}

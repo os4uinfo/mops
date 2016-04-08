@@ -16,13 +16,9 @@ func main() {
     if strings.HasPrefix(action, "start") {
        switch action {
        case "startserver":
-           var v []string
-           v = []string{"a", "b"}
-           server.Start(v)
+           server.Start(flag.Args()[1:])
        case "startclient":
-           var v []string
-           v = []string{"a", "b"}
-           client.Start(v)
+           client.Start(flag.Args()[1:])
        default:
            fmt.Println("Usage!")
        }

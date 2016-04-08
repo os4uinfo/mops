@@ -1,7 +1,7 @@
 package server
 
 import (
-     _  "fmt"
+    _ "fmt"
 )
 
 const (
@@ -23,7 +23,6 @@ func workerManager(listenAddr string) {
         }
     }
 }
-
 
 func registerWorker(w *worker) bool {
     okChan := make(chan bool, 1)
